@@ -26,7 +26,8 @@
     $phone=$_POST['phone'];
     $course=$_POST['course'];
     $pass=$_POST['pass'];
-    if(empty($_POST['name']) || empty($_POST['phone']) || empty($_POST['course']) || empty($_POST['pass']))
+    $ktu=$_POST['ktu'];
+    if(empty($_POST['name']) || empty($_POST['phone']) || empty($_POST['course']) || empty($_POST['pass']) || empty($_POST['ktu']) )
     {
       $error="Error : Enter all fields.";
     }
@@ -42,8 +43,8 @@
       }
       else
       {
-        $pro=$db->prepare("INSERT INTO `login`(`phone`,`name`,`course`,`password`,`answered`,`last_answered`) VALUES (?,?,?,?,'00000000000000000000',CURRENT_TIMESTAMP);");
-        $pro->bind_param("ssss",$phone,$name,$course,$pass);
+        $pro=$db->prepare("INSERT INTO `login`(`phone`,`name`,`course`,`password`,`answered`,`last_answered`,`ktu`) VALUES (?,?,?,?,'00000000000000000000',CURRENT_TIMESTAMP,?);");
+        $pro->bind_param("sssss",$phone,$name,$course,$pass,$ktu);
         if($pro->execute())
         {
           header("Location:signin.php");
@@ -104,7 +105,9 @@
             <input required type="text" class="form-control" id="signup_phone" placeholder="Phone" name="phone" maxlength="10" onkeydown="phoneNumber(this,event);" value="<?php echo $phone; ?>">
           </div>
         </div>
-
+                <div class="form-group  mgn">
+          <input required type="text" class="form-control" id="signup_ktu" placeholder="KTU Register Number" name="ktu" maxlength="75" >
+        </div>
         <div class="form-group  mgn">
           <input required type="text" class="form-control" id="signup_course" placeholder="Course With Year" name="course" maxlength="75" value="<?php echo $course; ?>">
         </div>

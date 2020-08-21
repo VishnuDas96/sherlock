@@ -50,6 +50,14 @@
       $error=1;
       $status="Error : #20 Please Contact Admin";
     }
+      $qry=("select * from limit_check where id=1");
+    $lim=mysqli_query($db,$qry);
+    if(mysqli_num_rows($lim)>0)
+    {
+      $ch=mysqli_fetch_assoc($lim);
+      $limit=$ch['limit_qus'];
+      $tym=$ch['qus_time'];
+    }
   }
   if(isset($_POST['subanswer']) && isset($_POST['answer']) && !(empty($_POST['answer'])))
   {
@@ -106,29 +114,35 @@
     {
       ?>
         <h1 class=" text-center whitecolor p-3" style="font-weight:600;text-shadow:0px 0px 5px #000000;">Level <?php echo $level; ?></h1>
-        <div class="container">
+        <div class="container text-light">
           <?php
           if($level == 1){
-          echo " hi  ";
+          echo "           <h3>Clue1:</h3> ";
 
           }
           ?>
-          <div class="container whitecolor question my-4" style="font-weight:600;font-size:40px;text-shadow:0px 0px 5px #000000;"><?php echo $question; ?> <?php echo $img; ?>
 
 
           <?php
+          if($limit>=$level)
+          { 
+            if($img==0)
+            { ?>
 
-          if($img==0)
-          { ?>
-
-          <?php
-          }
+               <?php
+              }
 
             else {
                 for($i=1;$i<=$img;$i++)
                   {?>
-                       <img src='images/<?php echo $level ?>/<?php echo $i?>.jpg'>
-        <?php }} ?>
+                       <img class="p-4 w-img" src='images/<?php echo $level ?>/<?php echo $i?>.jpg'>
+        <?php
+    
+                  }
+                }
+           
+              
+            ?>
           </div>
           <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>">
             <div class="form-group m-0">
@@ -139,6 +153,12 @@
           </form>
         </div>
       <?php
+    }
+    else{
+         ?>
+                   <div class="container whitecolor question my-4" style="font-weight:600;font-size:40px;text-shadow:0px 0px 5px #000000;">The Qusetion Will be Available On:<?php echo $tym; ?>  Please wait...... 
+              <?php 
+            }
     }
     else
     {
